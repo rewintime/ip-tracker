@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f8;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .login-box {
+      margin-top: 10vh;
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 320px;
+    }
+    .main-box {
+      display: none;
+      margin-top: 40px;
+      max-width: 1100px;
+      width: 95%;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #0056b3;
+      margin-bottom: 20px;
+    }
+    input {
+      padding: 10px;
+      font-size: 16px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      width: 100%;
+      max-width: 300px;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .hidden { display: none; }
+    .logo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 110px);
+      gap: 14px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    .logo-wrapper {
+      width: 104px;
+      height: 104px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      border-radius: 10px;
+    }
+    .logo-wrapper.selected {
+      outline: 3px solid red;
+    }
+    .logo-wrapper.selected .logo-tile {
+      filter: grayscale(100%);
+    }
+    .logo-tile {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      border-radius: 10px;
+      display: block;
+      transition: filter 0.2s ease;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background: #fff;
+    }
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #f0f0f0;
+    }
+    .green {
+      color: green;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .right-align {
+      text-align: right;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-box" id="loginBox">
+  <h2>Login</h2>
+  <input type="text" id="username" placeholder="Benutzername">
+  <input type="password" id="password" placeholder="Passwort">
+  <button onclick="login()">Login</button>
+</div>
+
+<div class="main-box" id="mainBox">
+  <h2>IP-Verfügbarkeit prüfen</h2>
+  <input type="text" id="ipInput" placeholder="IP-Adresse eingeben">
+  <button onclick="checkIP()">Anzeigen</button>
+  <p class="green" id="availability">IP verfügbar</p>
+
+  <table id="historyTable">
+    <thead>
+      <tr><th>IP</th><th>Anbieter</th><th>Datum</th></tr>
+    </thead>
+    <tbody id="historyBody"></tbody>
+  </table>
+
+  <div class="right-align">
+    <button onclick="showAll()">Alle anzeigen</button>
+  </div>
+
+  <button onclick="toggleForm()">Neue IP anlegen</button>
+
+  <div id="formSection" class="hidden">
+    <h2>Neue IP anlegen und speichern</h2>
+    <input type="text" id="newIp" readonly>
+    <div class="logo-grid">
+      <div class="logo-wrapper" onclick="toggleLogo(this, 'admiralbet')"><img src="logos/admiralbet.png" class="logo-tile"></div><div class="logo-wrapper" onclick="toggleLogo(this, 'bet365')"><img src="logos/bet365.png" class="logo-tile"></div><div class="logo-wrapper" onclick="toggleLogo(this, 'betano')"><img src="logos/betano.png" class="logo-tile"></div><div class="logo-wrapper" onclick="toggleLogo(this, 'betway')"><img src="logos/betway.png" class="logo-tile"></div><div class="logo-wrapper" onclick="toggleLogo(this, 'bwin')"><img src="logos/bwin.png" class="logo-tile"></div><div class="logo-wrapper" onclick="toggleLogo(this, 'daznbet')"><img src="logos/daznbet.png" class="logo-tile"></div><div class="logo-wrapper" onclick="toggleLogo(this, 'happybet')"><img src="logos/happybet.png" class="logo-tile"></div><div class="logo-wrapper" onclick="toggleLogo(this, 'interwetten')"><img src="logos/interwetten.png" class="logo-tile"></div><div class="logo-wrapper" onclick="toggleLogo(this, 'merkurbets')"><img src="logos/merkurbets.png" class="logo-tile"></div><div class="logo-wrapper" onclick="toggleLogo(this, 'neobet')"><img src="logos/neobet.png" class="logo-tile"></div><div class="logo-wrapper" onclick="toggleLogo(this, 'oddset')"><img src="logos/oddset.png" class="logo-tile"></div><div class="logo-wrapper" onclick="toggleLogo(this, 'sportwetten')"><img src="logos/sportwetten.png" class="logo-tile"></div><div class="logo-wrapper" onclick="toggleLogo(this, 'tipico')"><img src="logos/tipico.png" class="logo-tile"></div><div class="logo-wrapper" onclick="toggleLogo(this, 'tipwin')"><img src="logos/tipwin.png" class="logo-tile"></div><div class="logo-wrapper" onclick="toggleLogo(this, 'vbet')"><img src="logos/vbet.png" class="logo-tile"></div><div class="logo-wrapper" onclick="toggleLogo(this, 'winanax')"><img src="logos/winanax.png" class="logo-tile"></div>
+    </div>
+    <input type="text" id="custom" placeholder="Sonstiger Anbieter (optional)">
+    <button onclick="saveIP()">Speichern</button>
+  </div>
+</div>
+
+<script>
+  let history = [];
+  let selectedAnbieter = [];
+
+  function login() {
+    const user = document.getElementById("username").value.trim();
+    if (!user) {
+      alert("Bitte Benutzernamen eingeben.");
+      return;
+    }
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("mainBox").style.display = "block";
+  }
+
+  function checkIP() {
+    const ip = document.getElementById("ipInput").value.trim();
+    const filtered = history.filter(h => h.ip === ip);
+    const merged = {};
+    for (const entry of filtered) {
+      const key = entry.ip + entry.date;
+      if (!merged[key]) {
+        merged[key] = { ip: entry.ip, date: entry.date, anbieter: [] };
+      }
+      if (!merged[key].anbieter.includes(entry.anbieter)) {
+        merged[key].anbieter.push(entry.anbieter);
+      }
+    }
+    const rows = Object.values(merged).slice(-5).reverse();
+    const tbody = document.getElementById("historyBody");
+    tbody.innerHTML = "";
+    rows.forEach(h => {
+      const row = `<tr><td>${h.ip}</td><td>${h.anbieter.sort().join(", ")}</td><td>${h.date}</td></tr>`;
+      tbody.innerHTML += row;
+    });
+    document.getElementById("availability").style.display = "block";
+  }
+
+  function showAll() {
+    checkIP();
+  }
+
+  function toggleForm() {
+    const ip = document.getElementById("ipInput").value.trim();
+    document.getElementById("newIp").value = ip;
+    document.getElementById("formSection").classList.remove("hidden");
+  }
+
+  function toggleLogo(wrapper, name) {
+    const index = selectedAnbieter.indexOf(name);
+    if (index > -1) {
+      selectedAnbieter.splice(index, 1);
+      wrapper.classList.remove("selected");
+    } else {
+      selectedAnbieter.push(name);
+      wrapper.classList.add("selected");
+    }
+  }
+
+  function saveIP() {
+    const ip = document.getElementById("newIp").value;
+    const custom = document.getElementById("custom").value.trim();
+    const nowDate = new Date();
+    const now = ('0' + nowDate.getDate()).slice(-2) + '.' +
+                ('0' + (nowDate.getMonth() + 1)).slice(-2) + '.' +
+                nowDate.getFullYear();
+    selectedAnbieter.forEach(name => {
+      history.unshift({ ip: ip, anbieter: name, date: now });
+    });
+    if (custom) {
+      history.unshift({ ip: ip, anbieter: custom, date: now });
+    }
+    checkIP();
+    document.getElementById("formSection").classList.add("hidden");
+    document.getElementById("custom").value = "";
+    document.querySelectorAll(".logo-wrapper").forEach(el => el.classList.remove("selected"));
+    selectedAnbieter = [];
+  }
+</script>
+
+</body>
+</html>
